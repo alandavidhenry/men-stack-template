@@ -14,7 +14,7 @@ router.get('/index', async (req, res, next) => {
   });
   
   /* POST Add a new thing to the database and redirect to home */
-  router.post('/', async (req, res, next) => {
+  router.post('/', validateThing, async (req, res, next) => {
 	const thing = new Thing(req.body.thing);
 	await thing.save();
 	res.redirect('/');
@@ -37,7 +37,7 @@ router.get('/index', async (req, res, next) => {
   });
   
   /* PUT submit thing edit to database and redirect to the index page */
-  router.put('/:id/edit', async (req, res, next) => {
+  router.put('/:id/edit', validateThing, async (req, res, next) => {
 	const { id } = req.params;
 	const thing = await Thing.findByIdAndUpdate(id, { ...req.body.thing });
 	res.redirect('/things/index')
